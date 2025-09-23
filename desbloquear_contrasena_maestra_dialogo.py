@@ -37,18 +37,20 @@ class DesbloquearContrasenaMaestraDialogo(QDialog):
         contrasena = self.txtContrasena.text()
 
         if ValidadorContrasena.cumpleRequisitos(contrasena) :
-            HashPasswordHelper.HASH_GLOBAL = SymmetricEncryptionHelper.obtenerClaveDerivadaArgon2(SymmetricEncryptionHelper.DATA_FILE)
-            if HashPasswordHelper.verificarHash(HashPasswordHelper.HASH_GLOBAL, contrasena):
-                symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_GLOBAL)
+            HashPasswordHelper.HASH_COMPLETE_GLOBAL = None
+            HashPasswordHelper.HASH_SALT_GLOBAL = None
+            HashPasswordHelper.HASH_SALT_GLOBAL = SymmetricEncryptionHelper.obtenerClaveDerivadaArgon2(SymmetricEncryptionHelper.DATA_FILE)
+            HashPasswordHelper.HASH_COMPLETE_GLOBAL = HashPasswordHelper.generarHash(contrasena, HashPasswordHelper.HASH_SALT_GLOBAL)
+            print(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
+            print(HashPasswordHelper.HASH_SALT_GLOBAL)
+            try:
+                symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
                 dato = symmetricEncryptionHelper.descifrar(SymmetricEncryptionHelper.DATA_FILE)
-                #if dato is None:
-                    #QMessageBox.information(self, "Éxito", "Contraseña incorrecta...")
-                    #return;
-                RepositorioApunte.APUNTES = dato["apuntes"]
+                RepositorioApunte.APUNTES = dato["data"]
                 print(RepositorioApunte.APUNTES)
-            else:
-                 QMessageBox.warning(self, "Error", "Contraseña incorrecta...")
-                 return;
+            except Exception as e:
+                QMessageBox.warning(self, "Error", "Contraseña incorrecta...")
+                return;
         else:
             QMessageBox.warning(self, "Error",
                 "La contraseña no cumple los requisitos de seguridad:\n"

@@ -47,18 +47,19 @@ class CambiarContrasenaMaestraDialogo(QDialog):
         actualContrasena = self.txtActualContrasena.text()
         nuevaContrasena = self.txtNuevaContrasena.text()
         confirmarNuevaContrasena = self.txtConfirmarNuevaContrasena.text()
-        if ValidadorContrasena.cumpleRequisitos(actualContrasena) and ValidadorContrasena.esNuevaContrasenaValida(actualContrasena, nuevaContrasena):
-            HashPasswordHelper.HASH_GLOBAL = SymmetricEncryptionHelper.obtenerClaveDerivadaArgon2(SymmetricEncryptionHelper.DATA_FILE)
-            if HashPasswordHelper.verificarHash(HashPasswordHelper.HASH_GLOBAL, actualContrasena):
-                if ValidadorContrasena.validar(nuevaContrasena, confirmarNuevaContrasena) :
-                    valor = HashPasswordHelper.generarHash(nuevaContrasena)
-                    HashPasswordHelper.HASH_GLOBAL = valor
-                    symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_GLOBAL)
+        if ValidadorContrasena.cumpleRequisitos(actualContrasena) and ValidadorContrasena.esNuevaContrasenaValida(actualContrasena, nuevaContrasena) and ValidadorContrasena.validar(nuevaContrasena, confirmarNuevaContrasena):
+            HashPasswordHelper.HASH_SALT_GLOBAL = SymmetricEncryptionHelper.obtenerClaveDerivadaArgon2(SymmetricEncryptionHelper.DATA_FILE)
+            if HashPasswordHelper.HASH_COMPLETE_GLOBAL == HashPasswordHelper.generarHash(actualContrasena, HashPasswordHelper.HASH_SALT_GLOBAL):
+                HashPasswordHelper.generarHashAleatorio(nuevaContrasena)
+                if(HashPasswordHelper.verificarHash(HashPasswordHelper.HASH_COMPLETE_GLOBAL, nuevaContrasena)):
+                    symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
                     dato = {
                         "version": "1.0",
-                        "hash": HashPasswordHelper.HASH_GLOBAL,
-                        "apuntes": RepositorioApunte.APUNTES
+                        "hash": HashPasswordHelper.HASH_SALT_GLOBAL,
+                        "data": RepositorioApunte.APUNTES
                     }
+                    print(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
+                    print(HashPasswordHelper.HASH_SALT_GLOBAL)
                     if(symmetricEncryptionHelper.cifrar(dato, SymmetricEncryptionHelper.DATA_FILE)):
                         QMessageBox.information(self, "Éxito", "Clave maestra cambiada correctamente...")
                     else:
@@ -71,6 +72,9 @@ class CambiarContrasenaMaestraDialogo(QDialog):
                             "- Un número\n"
                             "- Un símbolo")
                         return;
+                else:
+                    QMessageBox.warning(self, "Error", "Contraseña incorrecta...")
+                    return;
             else:
                  QMessageBox.warning(self, "Error", "Contraseña incorrecta...")
                  return;

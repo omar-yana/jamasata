@@ -8,10 +8,7 @@ class SymmetricEncryptionHelper:
     DATA_FILE = "data_file.jama"
     def __init__(self, claveDerivadaArgon2: str):
         hashBase64 = claveDerivadaArgon2.split('$')[-1]
-        print("$$$$$$$$$$$#########")
-        print(hashBase64)
         hashBase64 = self.tobase64Relleno(hashBase64)
-        print(hashBase64)
         hashBytes = base64.b64decode(hashBase64)
         self.clave = hashBytes[:32]
 
@@ -25,7 +22,7 @@ class SymmetricEncryptionHelper:
     def cifrar(self, dato: dict, archivo: str) -> bool:
         #contenido = json.dumps(dato).encode('utf-8')
 
-        contenido = json.dumps(dato.get("apuntes", [])).encode('utf-8')
+        contenido = json.dumps(dato.get("data", [])).encode('utf-8')
 
         relleno = padding.PKCS7(128).padder()# Padding (AES requiere bloques de 16 bytes)
         contenidoRelleno = relleno.update(contenido) + relleno.finalize()
@@ -37,7 +34,7 @@ class SymmetricEncryptionHelper:
         cifrado = encryptor.update(contenidoRelleno) + encryptor.finalize()
         contenidoCifrado = (vectorInicializaciónAleatorio + cifrado).hex()
 
-        dato["apuntes"] = contenidoCifrado
+        dato["data"] = contenidoCifrado
 
         with open(archivo, "w") as file:
             #file.write(contenidoCifrado)
@@ -54,7 +51,7 @@ class SymmetricEncryptionHelper:
             #contenidoCifrado = file.read()
             dato = json.load(file)
 
-        contenidoCifrado = bytes.fromhex(dato["apuntes"])
+        contenidoCifrado = bytes.fromhex(dato["data"])
 
         vectorInicializaciónAleatorio = contenidoCifrado[:16]
         cifrado = contenidoCifrado[16:]
@@ -66,7 +63,7 @@ class SymmetricEncryptionHelper:
         sinRelleno = padding.PKCS7(128).unpadder()
         contenido = sinRelleno.update(contenidoRelleno) + sinRelleno.finalize()
 
-        dato["apuntes"] = json.loads(contenido)
+        dato["data"] = json.loads(contenido)
         return dato
 
     @staticmethod
