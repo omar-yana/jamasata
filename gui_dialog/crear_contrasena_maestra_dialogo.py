@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout
-from validador_contrasena import ValidadorContrasena
-from hash_helper import HashHelper
-from hash_password_helper import HashPasswordHelper
-from symmetric_encryption_helper import SymmetricEncryptionHelper
+from validator.validador_contrasena import ValidadorContrasena
+from helper.hash_helper import HashHelper
+from helper.hash_password_helper import HashPasswordHelper
+from helper.symmetric_encryption_helper import SymmetricEncryptionHelper
 
 class CrearContrasenaMaestraDialogo(QDialog):
     def __init__(self, parent=None):

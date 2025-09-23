@@ -1,5 +1,5 @@
 
-from interfaz_repositorio_apunte import InterfazRepositorioApunte
+from dao.interfaz_repositorio_apunte import InterfazRepositorioApunte
 
 class RepositorioApunte(InterfazRepositorioApunte):
     APUNTES = []

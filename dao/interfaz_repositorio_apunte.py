@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from apunte import Apunte
+from model.apunte import Apunte
 
 class InterfazRepositorioApunte(ABC):
 
