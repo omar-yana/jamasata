@@ -3,9 +3,12 @@ import json
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QDesktopWidget, QDialog, QDialogButtonBox, QLineEdit, QAction, QMdiArea, QMdiSubWindow, QPushButton, QTableWidget, QTableWidgetItem, QMessageBox, QHBoxLayout
 from acerca_dialogo import AcercaDialogo
+from crear_contrasena_maestra_dialogo import CrearContrasenaMaestraDialogo
+from desbloquear_contrasena_maestra_dialogo import DesbloquearContrasenaMaestraDialogo
+from desbloquear_contrasena_maestra_dialogo import DesbloquearContrasenaMaestraDialogo
+from cambiar_contrasena_maestra_dialogo import CambiarContrasenaMaestraDialogo
+from symmetric_encryption_helper import SymmetricEncryptionHelper
 
-DATA_FILE = "apuntes.json"
-PASSWORD = "1234"
 class Jamasata(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -21,6 +24,11 @@ class Jamasata(QMainWindow):
         self.mdiAreaPrincipal = QMdiArea()
         self.setCentralWidget(self.mdiAreaPrincipal)
         self.subVentana = None
+
+        if SymmetricEncryptionHelper.existeDataFile():
+            self.mostrarDesbloquearContrasenaMaestraDialogo()
+        else:
+            self.mostrarCrearContrasenaMaestraDialogo()
 
     def centrarRedimencionarVentana(self, anchoPorcentaje, altoPorcentaje):
         pantalla = QDesktopWidget().availableGeometry()  # Obtener tamaño de pantalla disponible
@@ -54,7 +62,7 @@ class Jamasata(QMainWindow):
         menuArchivo.addAction(menuAccionAdministrarApunte)
 
         menuAccionCambiarContrasenaMaestra = QAction("Cambiar contraseña maestra", self)
-        menuAccionCambiarContrasenaMaestra.triggered.connect(self.mostrarAcercaDialogo)
+        menuAccionCambiarContrasenaMaestra.triggered.connect(self.mostrarCambiarContrasenaMaestraDialogo)
         menuArchivo.addAction(menuAccionCambiarContrasenaMaestra)
 
         menuAyuda = barraMenu.addMenu("Ayuda")
@@ -67,6 +75,23 @@ class Jamasata(QMainWindow):
         acercaDialogo = AcercaDialogo()
         acercaDialogo.exec_()
 
+    def mostrarCrearContrasenaMaestraDialogo(self):
+        crearContrasenaMaestraDialogo = CrearContrasenaMaestraDialogo()
+        resultado = crearContrasenaMaestraDialogo.exec_()
+        if resultado == QDialog.Rejected:
+            sys.exit(0)
+
+    def mostrarDesbloquearContrasenaMaestraDialogo(self):
+        desbloquearContrasenaMaestraDialogo = DesbloquearContrasenaMaestraDialogo()
+        resultado = desbloquearContrasenaMaestraDialogo.exec_()
+        if resultado == QDialog.Rejected:
+            sys.exit(0)
+
+    def mostrarCambiarContrasenaMaestraDialogo(self):
+        cambiarContrasenaMaestraDialogo = CambiarContrasenaMaestraDialogo()
+        resultado = cambiarContrasenaMaestraDialogo.exec_()
+        if resultado == QDialog.Rejected:
+            sys.exit(0)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
