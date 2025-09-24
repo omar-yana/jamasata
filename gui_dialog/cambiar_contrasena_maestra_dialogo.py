@@ -58,7 +58,7 @@ class CambiarContrasenaMaestraDialogo(QDialog):
                         "hash": HashPasswordHelper.HASH_SALT_GLOBAL,
                         "data": RepositorioApunte.APUNTES
                     }
-                    
+
                     if(symmetricEncryptionHelper.cifrar(dato, SymmetricEncryptionHelper.DATA_FILE)):
                         QMessageBox.information(self, "Éxito", "Clave maestra cambiada correctamente...")
                     else:

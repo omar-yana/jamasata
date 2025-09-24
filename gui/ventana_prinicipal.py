@@ -16,8 +16,8 @@ class VentanaPrinicipal(QMainWindow):
         self.setWindowTitle("Jamasata")
         self.setGeometry(100, 100, 600, 300)
 
-        widgetCentralPrincipal = QWidget()
-        self.setCentralWidget(widgetCentralPrincipal)
+        wdgCentralPrincipal = QWidget()
+        self.setCentralWidget(wdgCentralPrincipal)
         self.centrarRedimencionarVentana(0.5, 0.5)
 
         self.crearMenu()
@@ -50,9 +50,9 @@ class VentanaPrinicipal(QMainWindow):
         self.move(frameGeometry.topLeft())
 
     def crearMenu(self):
-        barraMenu = self.menuBar()
+        mnbBarraMenu = self.menuBar()
 
-        menuArchivo = barraMenu.addMenu("Archivo")
+        menuArchivo = mnbBarraMenu.addMenu("Archivo")
 
         menuAccionAdministrarApunte = QAction("Administrar apunte", self)
         menuAccionAdministrarApunte.triggered.connect(self.mostrarAdministrarApunte)
@@ -66,7 +66,7 @@ class VentanaPrinicipal(QMainWindow):
         menuAccionSalir.triggered.connect(self.close)
         menuArchivo.addAction(menuAccionSalir)
 
-        menuAyuda = barraMenu.addMenu("Ayuda")
+        menuAyuda = mnbBarraMenu.addMenu("Ayuda")
 
         menuAccionAcerca = QAction("Acerca de", self)
         menuAccionAcerca.triggered.connect(self.mostrarAcercaDialogo)
@@ -94,8 +94,8 @@ class VentanaPrinicipal(QMainWindow):
     def mostrarCambiarContrasenaMaestraDialogo(self):
         cambiarContrasenaMaestraDialogo = CambiarContrasenaMaestraDialogo()
         resultado = cambiarContrasenaMaestraDialogo.exec_()
-        if resultado == QDialog.Rejected:
-            sys.exit(0)
+        #if resultado == QDialog.Rejected:
+            #sys.exit(0)
 
     def crearSubVentana(self, claseVentana, titulo="Ninguna"):
         if self.subVentana is not None and not self.subVentana.isHidden():

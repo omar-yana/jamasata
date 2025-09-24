@@ -4,6 +4,19 @@ Gestor de Contraseñas Seguro
 ## Descripción
 Este proyecto es una aplicación de escritorio en Python usando PyQt5 para gestionar contraseñas seguras.
 
+Crear apunte de contraseñas, posibilidad de registrar nuevas contraseñas asociadas a un servicio e usuario.
+
+Listar apunte de contraseñas, sin mostrar la contraseña en texto claro a menos que el usuario lo requiera.
+
+Editar apunte de contraseñas, permitir la modificación de contraseñas previamente guardadas
+
+Eliminar apunte de contraseñas.
+
+Guardar apuntes de contraseñas cifradas en disco en un archivo JSON con contenido cifrado.
+
+Flujo de clave maestra: el usuario debe establecer una clave maestra en el primer uso; esa clave desbloquea los datos cifrados.
+
+
 ## Requisitos
 - Python 3.10.4+
 - PyQt5 5.15.2+
