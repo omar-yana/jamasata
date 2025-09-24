@@ -139,10 +139,21 @@ class AdministrarApunte(QWidget):
             QMessageBox.warning(self, "Error", "Seleccione un apunte para eliminar")
             return
         id = self.tablaApunte.item(self.filaSeleccionada, 0).text()
-        self.interfazRepositorioApunte.eliminar(id)
-        self.guardarDatos()
-        self.refrescarTabla()
-        self.accionNuevo()
+
+        resultado = QMessageBox.question(
+            self,
+            "Confirmar eliminación",
+            "¿Está seguro de que desea eliminar este apunte?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+
+        if resultado == QMessageBox.Yes:
+            self.interfazRepositorioApunte.eliminar(id)
+            self.guardarDatos()
+            self.refrescarTabla()
+            self.accionNuevo()
+            QMessageBox.information(self, "Éxito", "El apunte fue eliminado.")
 
     def seleccionarFila(self, fila, columna):
         self.filaSeleccionada = fila
