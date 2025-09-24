@@ -26,16 +26,16 @@ class Apunte:
         }
 
     @staticmethod
-    def from_dict(d):
-        modificado = datetime.fromisoformat(d["modificado"]) if d.get("modificado") else None
-        caducidad = datetime.fromisoformat(d["caducidad"]) if d.get("caducidad") else None
+    def from_dict(data):
+        modificado = datetime.fromisoformat(data["modificado"]) if data.get("modificado") else None
+        caducidad = datetime.fromisoformat(data["caducidad"]) if data.get("caducidad") else None
         return Apunte(
-            id=d.get("id", ""),  # ID viene del diccionario
-            titulo=d.get("titulo", ""),
-            usuario=d.get("usuario", ""),
-            contrasena=d.get("contrasena", ""),
-            url=d.get("url", ""),
+            id=data.get("id", ""),  # ID viene del diccionario
+            titulo=data.get("titulo", ""),
+            usuario=data.get("usuario", ""),
+            contrasena=data.get("contrasena", ""),
+            url=data.get("url", ""),
             modificado=modificado,
             caducidad=caducidad,
-            comentario=d.get("comentario", "")
+            comentario=data.get("comentario", "")
         )

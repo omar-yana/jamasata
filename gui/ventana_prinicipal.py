@@ -8,16 +8,17 @@ from gui_dialog.desbloquear_contrasena_maestra_dialogo import DesbloquearContras
 from gui_dialog.desbloquear_contrasena_maestra_dialogo import DesbloquearContrasenaMaestraDialogo
 from gui_dialog.cambiar_contrasena_maestra_dialogo import CambiarContrasenaMaestraDialogo
 from helper.symmetric_encryption_helper import SymmetricEncryptionHelper
-
+from gui.adminsitrar_apunte import AdministrarApunte
+from dao.repositorio_apunte import RepositorioApunte
 class VentanaPrinicipal(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Jamasata")
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 600, 300)
 
         widgetCentralPrincipal = QWidget()
         self.setCentralWidget(widgetCentralPrincipal)
-        self.centrarRedimencionarVentana(0.4, 0.4)
+        self.centrarRedimencionarVentana(0.5, 0.5)
 
         self.crearMenu()
 
@@ -53,17 +54,17 @@ class VentanaPrinicipal(QMainWindow):
 
         menuArchivo = barraMenu.addMenu("Archivo")
 
-        menuAccionSalir = QAction("Salir", self)
-        menuAccionSalir.triggered.connect(self.close)
-        menuArchivo.addAction(menuAccionSalir)
-
         menuAccionAdministrarApunte = QAction("Administrar apunte", self)
-        menuAccionAdministrarApunte.triggered.connect(self.mostrarAcercaDialogo)
+        menuAccionAdministrarApunte.triggered.connect(self.mostrarAdministrarApunte)
         menuArchivo.addAction(menuAccionAdministrarApunte)
 
         menuAccionCambiarContrasenaMaestra = QAction("Cambiar contraseña maestra", self)
         menuAccionCambiarContrasenaMaestra.triggered.connect(self.mostrarCambiarContrasenaMaestraDialogo)
         menuArchivo.addAction(menuAccionCambiarContrasenaMaestra)
+
+        menuAccionSalir = QAction("Salir", self)
+        menuAccionSalir.triggered.connect(self.close)
+        menuArchivo.addAction(menuAccionSalir)
 
         menuAyuda = barraMenu.addMenu("Ayuda")
 
@@ -74,6 +75,9 @@ class VentanaPrinicipal(QMainWindow):
     def mostrarAcercaDialogo(self):
         acercaDialogo = AcercaDialogo()
         acercaDialogo.exec_()
+
+    def mostrarAdministrarApunte(self):
+        self.crearSubVentana(AdministrarApunte(RepositorioApunte()), "Administrar apunte")
 
     def mostrarCrearContrasenaMaestraDialogo(self):
         crearContrasenaMaestraDialogo = CrearContrasenaMaestraDialogo()
@@ -93,3 +97,15 @@ class VentanaPrinicipal(QMainWindow):
         if resultado == QDialog.Rejected:
             sys.exit(0)
 
+    def crearSubVentana(self, claseVentana, titulo="Ninguna"):
+        if self.subVentana is not None and not self.subVentana.isHidden():
+            self.subVentana.showNormal()
+            self.subVentana.activateWindow()
+            return
+
+        self.subVentana = QMdiSubWindow()
+        self.subVentana.setWidget(claseVentana)
+        self.subVentana.setWindowTitle(titulo)
+        self.mdiAreaPrincipal.addSubWindow(self.subVentana)
+        self.subVentana.show()
+        self.subVentana.showMaximized()

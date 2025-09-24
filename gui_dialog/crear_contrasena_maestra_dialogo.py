@@ -44,22 +44,13 @@ class CrearContrasenaMaestraDialogo(QDialog):
         if ValidadorContrasena.validar(contrasena, confirmarContrasena) :
             HashPasswordHelper.generarHashAleatorio(contrasena)
             if(HashPasswordHelper.verificarHash(HashPasswordHelper.HASH_COMPLETE_GLOBAL, contrasena)):
-                print(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
-                print(HashPasswordHelper.HASH_SALT_GLOBAL)
+                #print(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
+                #print(HashPasswordHelper.HASH_SALT_GLOBAL)
                 symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
                 dato = {
                     "version": "2.0",
                     "hash": HashPasswordHelper.HASH_SALT_GLOBAL,
-                    "data": [{
-                    "id": "hash1",
-                    "titulo": "Correo Personal",
-                    "usuario": "juan@gmail.com",
-                    "contrasena": "1234abcd",
-                    "url": "https://mail.google.com",
-                    "modificado": "2025-09-22T22:30:00",
-                    "caducidad": "2026-09-22T22:30:00",
-                    "comentario": "Contraseña principal del correo"
-                    }]
+                    "data": []
                 }
                 if(symmetricEncryptionHelper.cifrar(dato, SymmetricEncryptionHelper.DATA_FILE)):
                     QMessageBox.information(self, "Éxito", "Clave maestra creada correctamente...")

@@ -16,7 +16,7 @@ class InterfazRepositorioApunte(ABC):
         pass
 
     @abstractmethod
-    def obtener(self, id: str):
+    def obtenerPorId(self, id: str):
         pass
 
     @abstractmethod

@@ -41,13 +41,10 @@ class DesbloquearContrasenaMaestraDialogo(QDialog):
             HashPasswordHelper.HASH_SALT_GLOBAL = None
             HashPasswordHelper.HASH_SALT_GLOBAL = SymmetricEncryptionHelper.obtenerClaveDerivadaArgon2(SymmetricEncryptionHelper.DATA_FILE)
             HashPasswordHelper.HASH_COMPLETE_GLOBAL = HashPasswordHelper.generarHash(contrasena, HashPasswordHelper.HASH_SALT_GLOBAL)
-            print(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
-            print(HashPasswordHelper.HASH_SALT_GLOBAL)
             try:
                 symmetricEncryptionHelper = SymmetricEncryptionHelper(HashPasswordHelper.HASH_COMPLETE_GLOBAL)
                 dato = symmetricEncryptionHelper.descifrar(SymmetricEncryptionHelper.DATA_FILE)
                 RepositorioApunte.APUNTES = dato["data"]
-                print(RepositorioApunte.APUNTES)
             except Exception as e:
                 QMessageBox.warning(self, "Error", "Contraseña incorrecta...")
                 return;
